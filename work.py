@@ -84,7 +84,7 @@ class NessyDSL(object):
         self.Create_DSL.configure(state=self.ENABLED, background='cadetblue')
        '''
        #Helper Label
-       self.helper=Label(frame, text="", width=40)
+       self.helper=Label(frame, text="", width=100)
        self.helper.grid(row=10)
 
 
@@ -94,16 +94,35 @@ class NessyDSL(object):
        self.Declare_N2S3.bind("<Button-1>", self.N2S3_Dependency)
        self.Declare_N2S3.bind("<Enter>", self.on_enter)
        self.Declare_N2S3.bind("<Leave>", self.on_leave)
-       #Button to instantiate the DSL Object
+
+
+
+       #Button to import the classes
        self.Import_Classes=Button(frame,text='Add the necessary imports')
        self.Import_Classes.grid(row=5,columnspan=3,padx=10, pady=10)
        self.Import_Classes.bind("<Button-1>", self.Import)       
 
 
+       #Button to create n2s3 object
+       self.Create_Object=Button(frame,text='Build a N2S3SimulationDSL Object')
+       self.Create_Object.grid(row=6,columnspan=3,padx=10, pady=10)
+       self.Create_Object.bind("<Button-1>", self.create)  
+       
+
+       #Specifying the input format
+       self.input_dataset_help=Label(frame,text="Choose the type of Input Dataset")
+       self.input_dataset_help.grid(row=7, columnspan = 2,padx=10,pady=10)
+       self.choices = ['InputMnist', 'InputAER']
+       self.variable = StringVar(frame)
+       self.variable.set('Click Here to Choose')
+       self.w = OptionMenu(frame, self.variable, *self.choices)
+       self.w.grid(row=7, column = 4,padx=10,pady=10)
+        
+
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
 
     def on_enter(self, event):
-         self.helper.configure(text="Hello world")
+         self.helper.configure(text="This button is used to Declare N2S3 as an SBT dependency")
 
     def on_leave(self, enter):
          self.helper.configure(text="")
@@ -174,6 +193,12 @@ class NessyDSL(object):
       self.filehandle.close() 
       print("Successful Classes Import") 
 
+    def create(self,event):
+      with open(self.complete1,"a")  as self.filehandle: 
+         self.filebuffer1 = [r' ',r'implicit val network = N2S3SimulationDSL()']
+         self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
+      self.filehandle.close() 
+      print("Successful Created Object") 
 
 root = Tk()
 run=NessyDSL(root)
