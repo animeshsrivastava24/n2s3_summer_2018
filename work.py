@@ -23,6 +23,7 @@ except ImportError:
 class NessyDSL(object):
     #flags are created to monitor the user's multiple click
     __web_click_check_flag=0
+    __create_dsl=0
 
     #Work to be done to add the Nessy Logo [pending task 1 ]
     ''''
@@ -30,27 +31,11 @@ class NessyDSL(object):
     image_byt = urlopen(image_url).read()
     image_b64 = base64.encodestring(image_byt)
     '''
-    
     def __init__(self,master=None):
        #Create a frame inside the Master window
        frame= Frame(master,width=500, height=500, background="bisque")
        frame.pack()
-       
-   
-       '''
-       self.C = Canvas(frame, bg="blue", height=250, width=300)
-       self.filename = PhotoImage(data=__image_b64)
-       self.background_label = Label(frame, image=self.filename)
-       self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-       self.C.pack() 
-       '''
-       self.Create_DSL=Button(frame,text='Create Scala Directory on your Desktop')
-       self.Create_DSL.grid(rowspan=3,padx=20, pady=20, sticky=N+S+E+W)
-       self.Create_DSL.bind("<Button-1>", self.CreateDSL)
 
-       self.Declare_N2S3=Button(frame,text='Declare N2S3 as an SBT dependency')
-       self.Declare_N2S3.grid(row=3,padx=10, pady=10)
-       self.Declare_N2S3.bind("<Button-1>", self.N2S3_Dependency)
 
        #Create a menubar inside the frame
        self.menubar = Menu(frame)
@@ -71,6 +56,60 @@ class NessyDSL(object):
        self.menubar.add_cascade(label="About", menu=submenu)
        submenu.add_command(label="About NESSY",command=self.info)
        '''
+       
+       #Canvas to add arrows to the buttons after buttons
+       '''
+       self.C = Canvas(frame, bg="blue", height=250, width=300)
+       self.filename = PhotoImage(data=__image_b64)
+       self.background_label = Label(frame, image=self.filename)
+       self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+       self.C.pack() 
+       '''
+
+       #The GUI Working Info
+       self.helper_label= Label(frame,text='Please follow the buttons sequentially to run the DSL')
+       self.helper_label.grid(row=0,columnspan=3,sticky=N+S+E+W)
+
+
+       #Button to Create DSL 
+       self.Create_DSL=Button(frame,text='Create Scala Directory on your Desktop')
+       self.Create_DSL.grid(row=2,columnspan=3,padx=20, pady=20, sticky=N+S+E+W)
+       self.Create_DSL.bind("<Button-1>", self.CreateDSL)
+      
+       #To prevent user to click the button again once pressed
+       ''''
+       if(self.__create_dsl==1):
+        self.Create_DSL.configure(state=self.DISABLED, background='cadetblue')
+       else:
+        self.Create_DSL.configure(state=self.ENABLED, background='cadetblue')
+       '''
+       #Helper Label
+       self.helper=Label(frame, text="", width=40)
+       self.helper.grid(row=10)
+
+
+       #Button to Declare n2s3 dependencies
+       self.Declare_N2S3=Button(frame,text='Declare N2S3 as an SBT dependency')
+       self.Declare_N2S3.grid(row=4,columnspan=3,padx=10, pady=10)
+       self.Declare_N2S3.bind("<Button-1>", self.N2S3_Dependency)
+       self.Declare_N2S3.bind("<Enter>", self.on_enter)
+       self.Declare_N2S3.bind("<Leave>", self.on_leave)
+       #Button to instantiate the DSL Object
+       self.Import_Classes=Button(frame,text='Add the necessary imports')
+       self.Import_Classes.grid(row=5,columnspan=3,padx=10, pady=10)
+       self.Import_Classes.bind("<Button-1>", self.Import)       
+
+
+    #Define helper text for each of the buttons, this one is just for Declare_N2S3
+
+    def on_enter(self, event):
+         self.helper.configure(text="Hello world")
+
+    def on_leave(self, enter):
+         self.helper.configure(text="")
+
+
+
     def callback(self,event):
        __web_click_check_flag=1
        webbrowser.open_new(event.widget.cget("text"))
@@ -87,6 +126,7 @@ class NessyDSL(object):
 
     #functions to create a Scala Directory with the Name of the folder as user's name inside scala and to create a build.sbt file
     def CreateDSL(self,event):
+      __create_dSl=1
       self.username= str(getpass.getuser())
       self.desktop_path='/home/'+self.username+'/Desktop'
       self.current_now= str(datetime.datetime.now())
@@ -113,15 +153,27 @@ class NessyDSL(object):
       self.complete2= os.path.join(self.final_path, self.name_of_file2+".sbt")
       self.file2 = open(self.complete2, "w")
       print("Successful creation")
+
+
     
     def N2S3_Dependency(self,event):
       with open(self.complete2, "w")  as self.filehandle: 
-         self.filebuffer = [r'name := "My Project"',r'version := "1.0"',r'scalaVersion := "2.11.6"',r'libraryDependencies ++= Seq(',
+         self.filebuffer2 = [r'name := "My Project"',r'version := "1.0"',r'scalaVersion := "2.11.6"',r'libraryDependencies ++= Seq(',
          r'   "fr.univ-lille.cristal" %% "n2s3" % "1.1.1" exclude("net.sf", "jaer_2.11"),',
          r'   "net.sf" %% "jaer" % "1.0" from "https://sourcesup.renater.fr/frs/download.php/file/5047/jaer.jar")',r')']
-         self.filehandle.writelines("%s\n" % line for line in self.filebuffer)  
+         self.filehandle.writelines("%s\n" % line for line in self.filebuffer2)  
       self.filehandle.close() 
-      print("Successful Declaration") 
+      print("Successful Dependency Declaration") 
+
+ 
+    def Import(self,event):
+      with open(self.complete1,"w")  as self.filehandle: 
+         self.filebuffer1 = [r'import fr.univ_lille.cristal.emeraude.n2s3.dsl.N2S3DSLImplicits._',
+                             r'import fr.univ_lille.cristal.emeraude.n2s3.dsl.N2S3SimulationDSL']
+         self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
+      self.filehandle.close() 
+      print("Successful Classes Import") 
+
 
 root = Tk()
 run=NessyDSL(root)
