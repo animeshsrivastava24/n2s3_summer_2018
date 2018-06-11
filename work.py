@@ -21,6 +21,18 @@ except ImportError:
     from urllib.request import urlopen
 '''
 
+
+
+class StdRedirector():
+    def __init__(self, text_widget):
+        self.text_space = text_widget
+
+    def write(self, string):
+        self.text_space.config(state=NORMAL)
+        self.text_space.insert("end", string)
+        self.text_space.see("end")
+        self.text_space.config(state=DISABLED)
+
 class NessyDSL(object):
     #flags are created to monitor the user's multiple click
     __web_click_check_flag=0
@@ -65,6 +77,9 @@ class NessyDSL(object):
 
 
 
+
+
+
        #Create a menubar inside the frame
        self.menubar = Menu(self.top_frame)
        master.config(menu=self.menubar)
@@ -94,15 +109,28 @@ class NessyDSL(object):
        self.C.pack() 
        '''
 
+
+
+
+
+
        #The GUI Working Info
        self.helper_label= Label(self.top_frame,text='Please follow the buttons sequentially to run the DSL')
        self.helper_label.grid(row=1, sticky="nsew")
+
+
+
+
 
 
        #Button to Create DSL 
        self.Create_DSL=Button(self.ctr_left,text='Create Scala Directory on your Desktop')
        self.Create_DSL.grid(row=0,padx=20, pady=20, sticky=W)
        self.Create_DSL.bind("<Button-1>", self.CreateDSL)
+
+
+
+
       
        #To prevent user to click the button again once pressed
        ''''
@@ -112,12 +140,33 @@ class NessyDSL(object):
         self.Create_DSL.configure(state=self.ENABLED, background='cadetblue')
        '''
 
+
+
+
+
        #To do make the helper text fill the bottom frame 2
        #Helper Label
        self.helper=Label(self.btm_frame2, text="", width=100)
        self.helper.grid(sticky=W+E)
 
 
+
+       #stdout and stderr to Tkinter GUI example.
+       #https://gist.github.com/RascalTwo/55ea5480af4a7b031e49 
+       text_box = Text(self.btm_frame, state=DISABLED)
+       text_box.grid()
+       sys.stdout = StdRedirector(text_box)
+       sys.stderr = StdRedirector(text_box)
+       '''
+       output_button = Button(self.btm_frame, text="Output", command=self.main)
+       output_button.grid()
+
+       #https://gist.github.com/RascalTwo/55ea5480af4a7b031e49
+   
+      def main(self):
+        print "Std Output"
+        raise ValueError("Std Error") 
+       '''
        #Button to Declare n2s3 dependencies
        self.Declare_N2S3=Button(self.ctr_left,text='Declare N2S3 as an SBT dependency')
        self.Declare_N2S3.grid(row=2,padx=20, pady=20, sticky=W)
@@ -127,10 +176,15 @@ class NessyDSL(object):
 
 
 
+
+
        #Button to import the classes
        self.Import_Classes=Button(self.ctr_left,text='Add the necessary imports')
        self.Import_Classes.grid(row=4,padx=20, pady=20, sticky=W)
        self.Import_Classes.bind("<Button-1>", self.Import)       
+
+
+
 
 
        #Button to create n2s3 object
@@ -138,6 +192,10 @@ class NessyDSL(object):
        self.Create_Object.grid(row=6,padx=20, pady=20, sticky=W)
        self.Create_Object.bind("<Button-1>", self.create)  
        
+
+
+
+
 
        #Specifying the input format
        self.input_dataset_help=Label(self.ctr_left,text="Choose the type of Input Dataset")
@@ -149,13 +207,17 @@ class NessyDSL(object):
        self.w.grid(row=8, padx=20, pady=20, sticky=W)
         
 
+
+
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
 
     def on_enter(self, event):
          self.helper.configure(text="This button is used to Declare N2S3 as an SBT dependency")
-
     def on_leave(self, enter):
          self.helper.configure(text="")
+
+
+
 
 
 
@@ -164,6 +226,10 @@ class NessyDSL(object):
        webbrowser.open_new(event.widget.cget("text"))
        #bug fix required , prevent user to click on the About multiple times to keep adding the link
             
+
+
+
+
          
  
     def info(self,master=None):
@@ -172,6 +238,10 @@ class NessyDSL(object):
        self.theLabel=Label(frame,text="https://sourcesup.renater.fr/wiki/n2s3/start",fg="blue", cursor="hand2")
        self.theLabel.grid()
        self.theLabel.bind("<Button-1>", self.callback)
+
+
+
+
 
     #functions to create a Scala Directory with the Name of the folder as user's name inside scala and to create a build.sbt file
     def CreateDSL(self,event):
@@ -205,6 +275,9 @@ class NessyDSL(object):
 
 
     
+
+   
+    #functions to add the dependencies to the build.sbt file 
     def N2S3_Dependency(self,event):
       with open(self.complete2, "w")  as self.filehandle: 
          self.filebuffer2 = [r'name := "My Project"',r'version := "1.0"',r'scalaVersion := "2.11.6"',r'libraryDependencies ++= Seq(',
@@ -214,7 +287,10 @@ class NessyDSL(object):
       self.filehandle.close() 
       print("Successful Dependency Declaration") 
 
- 
+
+
+
+    #functions to add the libraries to the main scala file
     def Import(self,event):
       with open(self.complete1,"w")  as self.filehandle: 
          self.filebuffer1 = [r'import fr.univ_lille.cristal.emeraude.n2s3.dsl.N2S3DSLImplicits._',
@@ -223,12 +299,16 @@ class NessyDSL(object):
       self.filehandle.close() 
       print("Successful Classes Import") 
 
+
+
+    #functions to instantiate the dsl object to the main scala file
     def create(self,event):
       with open(self.complete1,"a")  as self.filehandle: 
          self.filebuffer1 = [r' ',r'implicit val network = N2S3SimulationDSL()']
          self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
       self.filehandle.close() 
       print("Successful Created Object") 
+
 
 root = Tk()
 run=NessyDSL(root)
