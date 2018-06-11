@@ -1,5 +1,5 @@
 #Created by Animesh Srivastava  10,11 June 2018
-#Information replace Bureau with Desktop in case you are an English user in the CreateDSL function in the Class
+#Information replace 'Bureau' with 'Desktop' in case you are an English user in the CreateDSL function in the Class
 from Tkinter import *
 import webbrowser
 import datetime
@@ -134,7 +134,7 @@ class NessyDSL(object):
 
        #Button to Create DSL 
        self.Create_DSL=Button(self.ctr_left,text='Create Scala Directory on your Desktop',state=NORMAL)
-       self.Create_DSL.grid(row=0,padx=20, pady=20, sticky=W)
+       self.Create_DSL.grid(row=0,padx=20, pady=10, sticky=W)
        self.Create_DSL.bind("<Button-1>", self.CreateDSL)
 
 
@@ -179,7 +179,7 @@ class NessyDSL(object):
 
        #Button to Declare n2s3 dependencies
        self.Declare_N2S3=Button(self.ctr_left,text='Declare N2S3 as an SBT dependency',state=NORMAL)
-       self.Declare_N2S3.grid(row=2,padx=20, pady=20, sticky=W)
+       self.Declare_N2S3.grid(row=2,padx=20, pady=10, sticky=W)
        self.Declare_N2S3.bind("<Button-1>", self.N2S3_Dependency)
        self.Declare_N2S3.bind("<Enter>", self.on_enter)
        self.Declare_N2S3.bind("<Leave>", self.on_leave)
@@ -190,7 +190,7 @@ class NessyDSL(object):
 
        #Button to import the classes
        self.Import_Classes=Button(self.ctr_left,text='Add the necessary imports',state=NORMAL)
-       self.Import_Classes.grid(row=4,padx=20, pady=20, sticky=W)
+       self.Import_Classes.grid(row=4,padx=20, pady=10, sticky=W)
        self.Import_Classes.bind("<Button-1>", self.Import)       
 
 
@@ -199,27 +199,139 @@ class NessyDSL(object):
 
        #Button to create n2s3 object
        self.Create_Object=Button(self.ctr_left,text='Build a N2S3SimulationDSL Object',state=NORMAL)
-       self.Create_Object.grid(row=6,padx=20, pady=20, sticky=W)
+       self.Create_Object.grid(row=6,padx=20, pady=10, sticky=W)
        self.Create_Object.bind("<Button-1>", self.create)  
        
 
 
 
+       '''
+       We still need to do the input neuron group entry in the scala file respectively
 
+       '''
 
        #Specifying the input format
        self.input_dataset_help=Label(self.ctr_left,text="Choose the type of Input Dataset from the selector on the Right" ,fg="red")
-       self.input_dataset_help.grid(row=8, padx=20, pady=20, sticky=W)
+       self.input_dataset_help.grid(row=8, padx=20, pady=10, sticky=W)
        self.choices = ['InputMnist', 'InputAER']
        self.variable = StringVar(self.ctr_right)
        self.variable.set('Click Here to Choose')
        self.w = OptionMenu( self.ctr_left, self.variable, *self.choices)
-       self.w.grid(row=8,column=1,padx=20, pady=20, sticky=W)
+       self.w.grid(row=8,column=1,padx=20, pady=10, sticky=W)
        self.y = self.variable.get() 
 
 
-       '''
+       #still we need to add the input neuron group and then give it a name
 
+
+
+       #Neural group 1
+       #To type the name of the neuron group,size,modeling type,threshold values
+       #Just for seeing we need to store it too
+       self.neuron_group1_name=Label(self.ctr_left,text="Enter name of your first neuron group" ,fg="red")
+       self.neuron_group1_name.grid(row=10, padx=20, sticky=W)
+       self.neuron_group1_name_entry=Entry(self.ctr_left)
+       self.neuron_group1_name_entry.grid(row=10,column=1, padx=20, sticky=W)
+       
+       self.neuron_group1_size=Label(self.ctr_left,text="Enter the size of your first neuron group",fg="red")       
+       self.neuron_group1_size.grid(row=11, padx=20, sticky=W)
+       self.neuron_group1_size_entry=Spinbox(self.ctr_left,from_=10,to=100)
+       self.neuron_group1_size_entry.grid(row=11,column=1, padx=20, sticky=W)
+      
+      
+       self.neuron_group1_threshold=Label(self.ctr_left,text="Enter the threoshold value unit=mV ",fg="red")
+       self.neuron_group1_threshold.grid(row=12, padx=20, sticky=W)
+       self.neuron_group1_threshold_entry=Spinbox(self.ctr_left,from_=10,to=100)
+       self.neuron_group1_threshold_entry.grid(row=12,column=1, padx=20, sticky=W)
+       
+       #bind the creation function to the button and drop down for modeling options [pending work]
+       self.neuron_group1_modeling=Label(self.ctr_left,text="Select the Modeling Option" ,fg="red")
+       self.neuron_group1_modeling.grid(row=13,column=0, padx=20, sticky=W)
+       self.neuron_group1_final=Button(self.ctr_left,text="Create the first neural network layer",fg="blue")
+       self.neuron_group1_final.grid(row=13,column=2, padx=20, sticky=W)
+
+      
+       #Neural group 2
+       #To type the name of the neuron group,size,modeling type,threshold values
+       #Just for seeing we need to store it too
+       self.neuron_group2_name=Label(self.ctr_left,text="Enter name of your second neuron group" ,fg="green")
+       self.neuron_group2_name.grid(row=14, padx=20,pady=10, sticky=W)
+       self.neuron_group2_name_entry=Entry(self.ctr_left)
+       self.neuron_group2_name_entry.grid(row=14,column=1, padx=20, sticky=W)
+       
+       self.neuron_group2_size=Label(self.ctr_left,text="Enter the size of your second neuron group",fg="green")       
+       self.neuron_group2_size.grid(row=15, padx=20, sticky=W)
+       self.neuron_group2_size_entry=Spinbox(self.ctr_left,from_=10,to=100)
+       self.neuron_group2_size_entry.grid(row=15,column=1, padx=20, sticky=W)
+      
+      
+       self.neuron_group2_threshold=Label(self.ctr_left,text="Enter the threoshold value unit=mV ",fg="green")
+       self.neuron_group2_threshold.grid(row=16, padx=20, sticky=W)
+       self.neuron_group2_threshold_entry=Spinbox(self.ctr_left,from_=10,to=100)
+       self.neuron_group2_threshold_entry.grid(row=16,column=1, padx=20, sticky=W)
+       
+       #bind the creation function to the button and drop down for modeling options [pending work]
+       self.neuron_group2_modeling=Label(self.ctr_left,text="Select the Modeling Option" ,fg="green")
+       self.neuron_group2_modeling.grid(row=17,column=0, padx=20, sticky=W)
+       self.neuron_group2_final=Button(self.ctr_left,text="Create the second neural network layer",fg="blue")
+       self.neuron_group2_final.grid(row=17,column=2, padx=20, sticky=W)
+
+
+       #Connection type BETWEEN GROUP 1 AND GROUP 2 [pending work]
+       self.connection_between_group12=Label(self.ctr_left,text="Choose the type of connection between Group1 and Group2" ,fg="red")
+       self.connection_between_group12.grid(row=18, padx=20, pady=10, sticky=W)
+       self.choices_12 = ['FullConnection', 'blah','blah','blah']
+       self.variable_12 = StringVar(self.ctr_right)
+       self.variable_12.set('Click Here to Choose')
+       self.w_12 = OptionMenu( self.ctr_left, self.variable_12, *self.choices_12)
+       self.w_12.grid(row=18,column=1,padx=20, pady=5, sticky=W)
+       self.y_12 = self.variable_12.get() 
+      
+
+
+       #Synapse type     [pending work]
+       self.connection_between_group12=Label(self.ctr_left,text="Choose the type of Synapses" ,fg="red")
+       self.connection_between_group12.grid(row=19, padx=20, pady=10, sticky=W)
+       self.s_choices_12 = ['StaticSTDP', 'StandardSTDP','SimplifiedSTDP','Ternary','Inhibitory']
+       self.s_variable_12 = StringVar(self.ctr_right)
+       self.s_variable_12.set('Click Here to Choose')
+       self.s_w_12 = OptionMenu( self.ctr_left, self.s_variable_12, *self.s_choices_12)
+       self.s_w_12.grid(row=19,column=1,padx=20, pady=5, sticky=W)
+       self.s_y_12 = self.s_variable_12.get() 
+      
+
+       #Connection type BETWEEN GROUP 1 AND GROUP 1 [pending work]
+       self.connection_between_group11=Label(self.ctr_left,text="Choose the type of connection between Group1 with itself" ,fg="red")
+       self.connection_between_group11.grid(row=20, padx=20, pady=10, sticky=W)
+       self.choices_11 = ['FullConnection', 'blah','blah','blah']
+       self.variable_11 = StringVar(self.ctr_right)
+       self.variable_11.set('Click Here to Choose')
+       self.w_11 = OptionMenu( self.ctr_left, self.variable_11, *self.choices_11)
+       self.w_11.grid(row=20,column=1,padx=20, pady=5, sticky=W)
+       self.y_11 = self.variable_11.get() 
+      
+
+
+       #Synapse type     [pending work]
+       self.connection_between_group11=Label(self.ctr_left,text="Choose the type of Synapses" ,fg="red")
+       self.connection_between_group11.grid(row=21, padx=20, pady=10, sticky=W)
+       self.s_choices_11 = ['StaticSTDP', 'StandardSTDP','SimplifiedSTDP','Ternary','Inhibitory']
+       self.s_variable_11 = StringVar(self.ctr_right)
+       self.s_variable_11.set('Click Here to Choose')
+       self.s_w_11 = OptionMenu( self.ctr_left, self.s_variable_11, *self.s_choices_11)
+       self.s_w_11.grid(row=21,column=1,padx=20, pady=5, sticky=W)
+       self.s_y_11 = self.s_variable_11.get() 
+      
+
+
+
+
+
+
+
+
+
+       '''
        #add the things we can do with the n2s3 simulator
        self.labelhelp=TEXT(self.ctr_right)
        self.labelhelp.grid(row=1, sticky="nsew") 
@@ -227,6 +339,7 @@ class NessyDSL(object):
 
 
        '''
+        
 
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
 
