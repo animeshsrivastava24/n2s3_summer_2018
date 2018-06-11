@@ -1,4 +1,5 @@
 #Created by Animesh Srivastava  June 2018
+#Information replace Bureau with Desktop in case you are an English user in the CreateDSL function in the Class
 from Tkinter import *
 import webbrowser
 import datetime
@@ -33,12 +34,39 @@ class NessyDSL(object):
     '''
     def __init__(self,master=None):
        #Create a frame inside the Master window
+       master.title('NESSY DSL SIMULATION')
+       master.geometry('{}x{}'.format(800, 800))
+       '''
        frame= Frame(master,width=500, height=500, background="bisque")
        frame.pack()
+       '''
+       self.top_frame = Frame(master, bg='red', width=774, height=300, pady=3)
+       self.center = Frame(master, bg='blue', width=774, height=300, padx=3, pady=3)
+       self.btm_frame = Frame(master, bg='yellow', width=774, height=100, pady=3)
+       self.btm_frame2 = Frame(master, bg='green', width=774, height=80, pady=3)
+
+       # layout all of the main containers
+       master.grid_rowconfigure(1, weight=1)
+       master.grid_columnconfigure(0, weight=1)
+
+       self.top_frame.grid(row=0, sticky="ew")
+       self.center.grid(row=1, sticky="nsew")
+       self.btm_frame.grid(row=3, sticky="ew")
+       self.btm_frame2.grid(row=4, sticky="ew")
+
+       self.center.grid_rowconfigure(0, weight=1)
+       self.center.grid_columnconfigure(1, weight=1)
+
+       self.ctr_left = Frame(self.center, bg='pink', width=300, height=190)
+       self.ctr_right = Frame(self.center, bg='purple', width=600, height=190, padx=3, pady=3)
+
+       self.ctr_left.grid(row=0, column=0, sticky="ns")  
+       self.ctr_right.grid(row=0, column=1, sticky="nsew")
+
 
 
        #Create a menubar inside the frame
-       self.menubar = Menu(frame)
+       self.menubar = Menu(self.top_frame)
        master.config(menu=self.menubar)
        submenu = Menu(self.menubar, tearoff=0)
        self.menubar.add_cascade(label="Options",menu=submenu)
@@ -67,13 +95,13 @@ class NessyDSL(object):
        '''
 
        #The GUI Working Info
-       self.helper_label= Label(frame,text='Please follow the buttons sequentially to run the DSL')
-       self.helper_label.grid(row=0,columnspan=3,sticky=N+S+E+W)
+       self.helper_label= Label(self.top_frame,text='Please follow the buttons sequentially to run the DSL')
+       self.helper_label.grid(row=1, sticky="nsew")
 
 
        #Button to Create DSL 
-       self.Create_DSL=Button(frame,text='Create Scala Directory on your Desktop')
-       self.Create_DSL.grid(row=2,columnspan=3,padx=20, pady=20, sticky=N+S+E+W)
+       self.Create_DSL=Button(self.ctr_left,text='Create Scala Directory on your Desktop')
+       self.Create_DSL.grid(row=0,padx=20, pady=20, sticky=W)
        self.Create_DSL.bind("<Button-1>", self.CreateDSL)
       
        #To prevent user to click the button again once pressed
@@ -83,14 +111,16 @@ class NessyDSL(object):
        else:
         self.Create_DSL.configure(state=self.ENABLED, background='cadetblue')
        '''
+
+       #To do make the helper text fill the bottom frame 2
        #Helper Label
-       self.helper=Label(frame, text="", width=100)
-       self.helper.grid(row=10)
+       self.helper=Label(self.btm_frame2, text="", width=100)
+       self.helper.grid(sticky=W+E)
 
 
        #Button to Declare n2s3 dependencies
-       self.Declare_N2S3=Button(frame,text='Declare N2S3 as an SBT dependency')
-       self.Declare_N2S3.grid(row=4,columnspan=3,padx=10, pady=10)
+       self.Declare_N2S3=Button(self.ctr_left,text='Declare N2S3 as an SBT dependency')
+       self.Declare_N2S3.grid(row=2,padx=20, pady=20, sticky=W)
        self.Declare_N2S3.bind("<Button-1>", self.N2S3_Dependency)
        self.Declare_N2S3.bind("<Enter>", self.on_enter)
        self.Declare_N2S3.bind("<Leave>", self.on_leave)
@@ -98,25 +128,25 @@ class NessyDSL(object):
 
 
        #Button to import the classes
-       self.Import_Classes=Button(frame,text='Add the necessary imports')
-       self.Import_Classes.grid(row=5,columnspan=3,padx=10, pady=10)
+       self.Import_Classes=Button(self.ctr_left,text='Add the necessary imports')
+       self.Import_Classes.grid(row=4,padx=20, pady=20, sticky=W)
        self.Import_Classes.bind("<Button-1>", self.Import)       
 
 
        #Button to create n2s3 object
-       self.Create_Object=Button(frame,text='Build a N2S3SimulationDSL Object')
-       self.Create_Object.grid(row=6,columnspan=3,padx=10, pady=10)
+       self.Create_Object=Button(self.ctr_left,text='Build a N2S3SimulationDSL Object')
+       self.Create_Object.grid(row=6,padx=20, pady=20, sticky=W)
        self.Create_Object.bind("<Button-1>", self.create)  
        
 
        #Specifying the input format
-       self.input_dataset_help=Label(frame,text="Choose the type of Input Dataset")
-       self.input_dataset_help.grid(row=7, columnspan = 2,padx=10,pady=10)
+       self.input_dataset_help=Label(self.ctr_left,text="Choose the type of Input Dataset")
+       self.input_dataset_help.grid(row=8, padx=20, pady=20, sticky=W)
        self.choices = ['InputMnist', 'InputAER']
-       self.variable = StringVar(frame)
+       self.variable = StringVar(self.ctr_right)
        self.variable.set('Click Here to Choose')
-       self.w = OptionMenu(frame, self.variable, *self.choices)
-       self.w.grid(row=7, column = 4,padx=10,pady=10)
+       self.w = OptionMenu( self.ctr_right, self.variable, *self.choices)
+       self.w.grid(row=8, padx=20, pady=20, sticky=W)
         
 
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
@@ -137,22 +167,22 @@ class NessyDSL(object):
          
  
     def info(self,master=None):
-       frame= Frame(master,width=100, height=100, background="bisque")
-       frame.pack()
+       frame= Frame( self.btm_frame2,width=100, height=100, background="bisque")
+       frame.grid()
        self.theLabel=Label(frame,text="https://sourcesup.renater.fr/wiki/n2s3/start",fg="blue", cursor="hand2")
-       self.theLabel.pack()
+       self.theLabel.grid()
        self.theLabel.bind("<Button-1>", self.callback)
 
     #functions to create a Scala Directory with the Name of the folder as user's name inside scala and to create a build.sbt file
     def CreateDSL(self,event):
       __create_dSl=1
       self.username= str(getpass.getuser())
-      self.desktop_path='/home/'+self.username+'/Desktop'
+      self.desktop_path='/home/'+self.username+'/Bureau'
       self.current_now= str(datetime.datetime.now())
 
       #Nested Creations
       self.inside_folders= ['resource','scala','java']
-      self.sub_folders= ['main','test']
+      self.sub_folders= ['test','main']
       self.final_path=self.desktop_path+'/'+self.current_now+'/'
       os.mkdir(self.final_path)
       for p in self.sub_folders:
