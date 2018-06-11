@@ -10,3 +10,6 @@ Log: Sun 10th June
 - [] Add the helper text for each of the buttons actions
 - [] Add the canvas to show arrows for directional movements
 - [x] To prevent user to click the button again once pressed
+- [] Add the window to show to outputs of the experiment
+- [] Manage the output console and the window to show the results side by side
+- [] Fix the button disability bugs
