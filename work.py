@@ -1,4 +1,4 @@
-#Created by Animesh Srivastava  June 2018
+#Created by Animesh Srivastava  10,11 June 2018
 #Information replace Bureau with Desktop in case you are an English user in the CreateDSL function in the Class
 from Tkinter import *
 import webbrowser
@@ -124,7 +124,7 @@ class NessyDSL(object):
 
 
        #Button to Create DSL 
-       self.Create_DSL=Button(self.ctr_left,text='Create Scala Directory on your Desktop')
+       self.Create_DSL=Button(self.ctr_left,text='Create Scala Directory on your Desktop',state=NORMAL)
        self.Create_DSL.grid(row=0,padx=20, pady=20, sticky=W)
        self.Create_DSL.bind("<Button-1>", self.CreateDSL)
 
@@ -167,8 +167,11 @@ class NessyDSL(object):
         print "Std Output"
         raise ValueError("Std Error") 
        '''
+
+
+
        #Button to Declare n2s3 dependencies
-       self.Declare_N2S3=Button(self.ctr_left,text='Declare N2S3 as an SBT dependency')
+       self.Declare_N2S3=Button(self.ctr_left,text='Declare N2S3 as an SBT dependency',state=NORMAL)
        self.Declare_N2S3.grid(row=2,padx=20, pady=20, sticky=W)
        self.Declare_N2S3.bind("<Button-1>", self.N2S3_Dependency)
        self.Declare_N2S3.bind("<Enter>", self.on_enter)
@@ -179,7 +182,7 @@ class NessyDSL(object):
 
 
        #Button to import the classes
-       self.Import_Classes=Button(self.ctr_left,text='Add the necessary imports')
+       self.Import_Classes=Button(self.ctr_left,text='Add the necessary imports',state=NORMAL)
        self.Import_Classes.grid(row=4,padx=20, pady=20, sticky=W)
        self.Import_Classes.bind("<Button-1>", self.Import)       
 
@@ -188,7 +191,7 @@ class NessyDSL(object):
 
 
        #Button to create n2s3 object
-       self.Create_Object=Button(self.ctr_left,text='Build a N2S3SimulationDSL Object')
+       self.Create_Object=Button(self.ctr_left,text='Build a N2S3SimulationDSL Object',state=NORMAL)
        self.Create_Object.grid(row=6,padx=20, pady=20, sticky=W)
        self.Create_Object.bind("<Button-1>", self.create)  
        
@@ -245,6 +248,7 @@ class NessyDSL(object):
 
     #functions to create a Scala Directory with the Name of the folder as user's name inside scala and to create a build.sbt file
     def CreateDSL(self,event):
+      self.Create_DSL['state'] = 'disabled'
       __create_dSl=1
       self.username= str(getpass.getuser())
       self.desktop_path='/home/'+self.username+'/Bureau'
@@ -279,6 +283,7 @@ class NessyDSL(object):
    
     #functions to add the dependencies to the build.sbt file 
     def N2S3_Dependency(self,event):
+      self.Declare_N2S3.config(state="disabled")
       with open(self.complete2, "w")  as self.filehandle: 
          self.filebuffer2 = [r'name := "My Project"',r'version := "1.0"',r'scalaVersion := "2.11.6"',r'libraryDependencies ++= Seq(',
          r'   "fr.univ-lille.cristal" %% "n2s3" % "1.1.1" exclude("net.sf", "jaer_2.11"),',
@@ -292,6 +297,7 @@ class NessyDSL(object):
 
     #functions to add the libraries to the main scala file
     def Import(self,event):
+      self.Import_Classes.config(state="disabled")
       with open(self.complete1,"w")  as self.filehandle: 
          self.filebuffer1 = [r'import fr.univ_lille.cristal.emeraude.n2s3.dsl.N2S3DSLImplicits._',
                              r'import fr.univ_lille.cristal.emeraude.n2s3.dsl.N2S3SimulationDSL']
@@ -303,6 +309,7 @@ class NessyDSL(object):
 
     #functions to instantiate the dsl object to the main scala file
     def create(self,event):
+      self.Create_Object.config(state="disabled")
       with open(self.complete1,"a")  as self.filehandle: 
          self.filebuffer1 = [r' ',r'implicit val network = N2S3SimulationDSL()']
          self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
