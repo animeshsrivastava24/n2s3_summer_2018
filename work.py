@@ -6,8 +6,19 @@ import datetime
 import sys
 import os   #to make the directory
 import getpass #to get the user's name
+ 
 
+
+#to import the graphical outputs
 '''
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
+'''
+
+
+
 #to get the image from the Internet Sources we need to add the following
 import io
 import base64
@@ -19,10 +30,9 @@ except ImportError:
     # Python3
     import tkinter as tk
     from urllib.request import urlopen
-'''
 
 
-
+#the class below is for the standard output and input console work, no need to disturb it
 class StdRedirector():
     def __init__(self, text_widget):
         self.text_space = text_widget
@@ -33,7 +43,9 @@ class StdRedirector():
         self.text_space.see("end")
         self.text_space.config(state=DISABLED)
 
+#our main class
 class NessyDSL(object):
+    print("Welcome")
     #flags are created to monitor the user's multiple click
     __web_click_check_flag=0
     __create_dsl=0
@@ -53,7 +65,7 @@ class NessyDSL(object):
        frame.pack()
        '''
        self.top_frame = Frame(master, bg='red', width=774, height=300, pady=3)
-       self.center = Frame(master, bg='blue', width=774, height=300, padx=3, pady=3)
+       self.center = Frame(master, bg='blue', width=774, height=600, padx=3, pady=3)
        self.btm_frame = Frame(master, bg='yellow', width=774, height=100, pady=3)
        self.btm_frame2 = Frame(master, bg='green', width=774, height=80, pady=3)
 
@@ -74,9 +86,6 @@ class NessyDSL(object):
 
        self.ctr_left.grid(row=0, column=0, sticky="ns")  
        self.ctr_right.grid(row=0, column=1, sticky="nsew")
-
-
-
 
 
 
@@ -153,8 +162,8 @@ class NessyDSL(object):
 
        #stdout and stderr to Tkinter GUI example.
        #https://gist.github.com/RascalTwo/55ea5480af4a7b031e49 
-       text_box = Text(self.btm_frame, state=DISABLED)
-       text_box.grid()
+       text_box = Text(self.ctr_right,width=100, height=100, state=DISABLED)
+       text_box.grid(row=0,column=2,sticky=W+E+N+S)
        sys.stdout = StdRedirector(text_box)
        sys.stderr = StdRedirector(text_box)
        '''
@@ -167,8 +176,6 @@ class NessyDSL(object):
         print "Std Output"
         raise ValueError("Std Error") 
        '''
-
-
 
        #Button to Declare n2s3 dependencies
        self.Declare_N2S3=Button(self.ctr_left,text='Declare N2S3 as an SBT dependency',state=NORMAL)
@@ -201,16 +208,25 @@ class NessyDSL(object):
 
 
        #Specifying the input format
-       self.input_dataset_help=Label(self.ctr_left,text="Choose the type of Input Dataset")
+       self.input_dataset_help=Label(self.ctr_left,text="Choose the type of Input Dataset from the selector on the Right" ,fg="red")
        self.input_dataset_help.grid(row=8, padx=20, pady=20, sticky=W)
        self.choices = ['InputMnist', 'InputAER']
        self.variable = StringVar(self.ctr_right)
        self.variable.set('Click Here to Choose')
-       self.w = OptionMenu( self.ctr_right, self.variable, *self.choices)
-       self.w.grid(row=8, padx=20, pady=20, sticky=W)
-        
+       self.w = OptionMenu( self.ctr_left, self.variable, *self.choices)
+       self.w.grid(row=8,column=1,padx=20, pady=20, sticky=W)
+       self.y = self.variable.get() 
 
 
+       '''
+
+       #add the things we can do with the n2s3 simulator
+       self.labelhelp=TEXT(self.ctr_right)
+       self.labelhelp.grid(row=1, sticky="nsew") 
+       self.labelhelp.insert(INSERT, "With the N2S3 simulator comes a small domain-specific language, aimed at providing a simplified interface for enthusiasts not yet familiar with the scala programming language. For now, it only supports basic experiment writing, that is : * Network definition ")
+
+
+       '''
 
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
 
