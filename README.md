@@ -14,3 +14,4 @@ Log: Sun 10th June
 - [] Manage the output console and the window to show the results side by side
 - [] Fix the button disability bugs
 - [X] Added a button in work.py to open a new window to ask user about their work
+- [] Try to save the text file to the save dirctory in which the folder is created
