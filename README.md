@@ -13,4 +13,4 @@ Log: Sun 10th June
 - [] Add the window to show to outputs of the experiment
 - [] Manage the output console and the window to show the results side by side
 - [] Fix the button disability bugs
-- [] Add a recursive function to give the user opportunity to add more than one layer 
+- [X] Added a button in work.py to open a new window to ask user about their work
