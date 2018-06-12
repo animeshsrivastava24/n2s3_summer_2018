@@ -70,7 +70,6 @@ class NessyDSL(object):
        submenu = Menu(self.menubar, tearoff=0)
        self.menubar.add_cascade(label="Options",menu=submenu)
        submenu.add_command(label="Quit",command=master.quit)
-       submenu.add_separator()
        submenu.add_command(label="About NESSY",command=self.info)
        
   
@@ -123,13 +122,12 @@ class NessyDSL(object):
        self.Create_Object.bind("<Button-1>", self.create)  
        
        #Button to open neural network creation window
-       self.neuralbutton =Button(self.ctr_left, text ="Click to create the "+ str(flag_neural_layer_name) + " layer")
+       self.neuralbutton =Button(self.ctr_left, text ="Click to create the neural network layer")
        self.neuralbutton.grid(row=7,padx=20, pady=10, sticky=W)
        self.neuralbutton.bind("<Button-1>", self.neural_network_window)  
  
     def neural_network_window(self,event): # new window definition
           execfile('neural_layer.py')
-          flag_neural_layer_name+=1
 
 
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
