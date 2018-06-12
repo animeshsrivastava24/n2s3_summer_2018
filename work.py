@@ -1,4 +1,4 @@
-#Created by Animesh Srivastava  10,11 June 2018
+#Created by Animesh Srivastava  
 #Information replace 'Bureau' with 'Desktop' in case you are an English user in the CreateDSL function in the Class
 from Tkinter import *
 import webbrowser
@@ -6,19 +6,7 @@ import datetime
 import sys
 import os   #to make the directory
 import getpass #to get the user's name
- 
-
-
-#to import the graphical outputs
-'''
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
-'''
-
-
-
+import neural_layer
 #to get the image from the Internet Sources we need to add the following
 import io
 import base64
@@ -31,7 +19,7 @@ except ImportError:
     import tkinter as tk
     from urllib.request import urlopen
 
-
+flag_neural_layer_name=1
 #the class below is for the standard output and input console work, no need to disturb it
 class StdRedirector():
     def __init__(self, text_widget):
@@ -46,24 +34,11 @@ class StdRedirector():
 #our main class
 class NessyDSL(object):
     print("Welcome")
-    #flags are created to monitor the user's multiple click
-    __web_click_check_flag=0
-    __create_dsl=0
-
-    #Work to be done to add the Nessy Logo [pending task 1 ]
-    ''''
-    image_url = "https://sourcesup.renater.fr/wiki/n2s3/_media/wiki:logo_n2s3.png"
-    image_byt = urlopen(image_url).read()
-    image_b64 = base64.encodestring(image_byt)
-    '''
-    def __init__(self,master=None):
+    global flag_neural_layer_name
+    def __init__(self,master):
        #Create a frame inside the Master window
        master.title('NESSY DSL SIMULATION')
        master.geometry('{}x{}'.format(800, 800))
-       '''
-       frame= Frame(master,width=500, height=500, background="bisque")
-       frame.pack()
-       '''
        self.top_frame = Frame(master, bg='red', width=774, height=300, pady=3)
        self.center = Frame(master, bg='blue', width=774, height=600, padx=3, pady=3)
        self.btm_frame = Frame(master, bg='yellow', width=774, height=100, pady=3)
@@ -86,7 +61,7 @@ class NessyDSL(object):
 
        self.ctr_left.grid(row=0, column=0, sticky="ns")  
        self.ctr_right.grid(row=0, column=1, sticky="nsew")
-
+       self.neural_layer_flag=1
 
 
        #Create a menubar inside the frame
@@ -98,57 +73,15 @@ class NessyDSL(object):
        submenu.add_separator()
        submenu.add_command(label="About NESSY",command=self.info)
        
-       '''
-       #Create a submenu now inside the menubar
-       submenu = Menu(self.menubar, tearoff=0)
-       #Add the menubar labels to show in the submenu
-
-       self.menubar.add_cascade(label="File", menu=submenu)
-       submenu.add_command(label="Quit",command=master.quit)
-       self.menubar.add_cascade(label="About", menu=submenu)
-       submenu.add_command(label="About NESSY",command=self.info)
-       '''
-       
-       #Canvas to add arrows to the buttons after buttons
-       '''
-       self.C = Canvas(frame, bg="blue", height=250, width=300)
-       self.filename = PhotoImage(data=__image_b64)
-       self.background_label = Label(frame, image=self.filename)
-       self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-       self.C.pack() 
-       '''
-
-
-
-
-
-
+  
        #The GUI Working Info
        self.helper_label= Label(self.top_frame,text='Please follow the buttons sequentially to run the DSL')
        self.helper_label.grid(row=1, sticky="nsew")
-
-
-
-
-
 
        #Button to Create DSL 
        self.Create_DSL=Button(self.ctr_left,text='Create Scala Directory on your Desktop',state=NORMAL)
        self.Create_DSL.grid(row=0,padx=20, pady=10, sticky=W)
        self.Create_DSL.bind("<Button-1>", self.CreateDSL)
-
-
-
-
-      
-       #To prevent user to click the button again once pressed
-       ''''
-       if(self.__create_dsl==1):
-        self.Create_DSL.configure(state=self.DISABLED, background='cadetblue')
-       else:
-        self.Create_DSL.configure(state=self.ENABLED, background='cadetblue')
-       '''
-
 
 
 
@@ -166,34 +99,21 @@ class NessyDSL(object):
        text_box.grid(row=0,column=2,sticky=W+E+N+S)
        sys.stdout = StdRedirector(text_box)
        sys.stderr = StdRedirector(text_box)
-       '''
-       output_button = Button(self.btm_frame, text="Output", command=self.main)
-       output_button.grid()
-
-       #https://gist.github.com/RascalTwo/55ea5480af4a7b031e49
-   
-      def main(self):
-        print "Std Output"
-        raise ValueError("Std Error") 
-       '''
-
+  
        #Button to Declare n2s3 dependencies
        self.Declare_N2S3=Button(self.ctr_left,text='Declare N2S3 as an SBT dependency',state=NORMAL)
        self.Declare_N2S3.grid(row=2,padx=20, pady=10, sticky=W)
        self.Declare_N2S3.bind("<Button-1>", self.N2S3_Dependency)
        self.Declare_N2S3.bind("<Enter>", self.on_enter)
        self.Declare_N2S3.bind("<Leave>", self.on_leave)
-
-
-
-
+      
 
        #Button to import the classes
        self.Import_Classes=Button(self.ctr_left,text='Add the necessary imports',state=NORMAL)
        self.Import_Classes.grid(row=4,padx=20, pady=10, sticky=W)
        self.Import_Classes.bind("<Button-1>", self.Import)       
 
-
+      
 
 
 
@@ -202,144 +122,15 @@ class NessyDSL(object):
        self.Create_Object.grid(row=6,padx=20, pady=10, sticky=W)
        self.Create_Object.bind("<Button-1>", self.create)  
        
+       #Button to open neural network creation window
+       self.neuralbutton =Button(self.ctr_left, text ="Click to create the "+ str(flag_neural_layer_name) + " layer")
+       self.neuralbutton.grid(row=7,padx=20, pady=10, sticky=W)
+       self.neuralbutton.bind("<Button-1>", self.neural_network_window)  
+ 
+    def neural_network_window(self,event): # new window definition
+          execfile('neural_layer.py')
+          flag_neural_layer_name+=1
 
-
-
-       '''
-       We still need to do the input neuron group entry in the scala file respectively
-
-       '''
-
-       #Specifying the input format
-       self.input_dataset_help=Label(self.ctr_left,text="Choose the type of Input Dataset from the selector on the Right" ,fg="red")
-       self.input_dataset_help.grid(row=8, padx=20, pady=10, sticky=W)
-       self.choices = ['InputMnist', 'InputAER']
-       self.variable = StringVar(self.ctr_right)
-       self.variable.set('Click Here to Choose')
-       self.w = OptionMenu( self.ctr_left, self.variable, *self.choices)
-       self.w.grid(row=8,column=1,padx=20, pady=10, sticky=W)
-       self.y = self.variable.get() 
-
-
-       #still we need to add the input neuron group and then give it a name
-
-
-
-       #Neural group 1
-       #To type the name of the neuron group,size,modeling type,threshold values
-       #Just for seeing we need to store it too
-       self.neuron_group1_name=Label(self.ctr_left,text="Enter name of your first neuron group" ,fg="red")
-       self.neuron_group1_name.grid(row=10, padx=20, sticky=W)
-       self.neuron_group1_name_entry=Entry(self.ctr_left)
-       self.neuron_group1_name_entry.grid(row=10,column=1, padx=20, sticky=W)
-       
-       self.neuron_group1_size=Label(self.ctr_left,text="Enter the size of your first neuron group",fg="red")       
-       self.neuron_group1_size.grid(row=11, padx=20, sticky=W)
-       self.neuron_group1_size_entry=Spinbox(self.ctr_left,from_=10,to=100)
-       self.neuron_group1_size_entry.grid(row=11,column=1, padx=20, sticky=W)
-      
-      
-       self.neuron_group1_threshold=Label(self.ctr_left,text="Enter the threoshold value unit=mV ",fg="red")
-       self.neuron_group1_threshold.grid(row=12, padx=20, sticky=W)
-       self.neuron_group1_threshold_entry=Spinbox(self.ctr_left,from_=10,to=100)
-       self.neuron_group1_threshold_entry.grid(row=12,column=1, padx=20, sticky=W)
-       
-       #bind the creation function to the button and drop down for modeling options [pending work]
-       self.neuron_group1_modeling=Label(self.ctr_left,text="Select the Modeling Option" ,fg="red")
-       self.neuron_group1_modeling.grid(row=13,column=0, padx=20, sticky=W)
-       self.neuron_group1_final=Button(self.ctr_left,text="Create the first neural network layer",fg="blue")
-       self.neuron_group1_final.grid(row=13,column=2, padx=20, sticky=W)
-
-      
-       #Neural group 2
-       #To type the name of the neuron group,size,modeling type,threshold values
-       #Just for seeing we need to store it too
-       self.neuron_group2_name=Label(self.ctr_left,text="Enter name of your second neuron group" ,fg="green")
-       self.neuron_group2_name.grid(row=14, padx=20,pady=10, sticky=W)
-       self.neuron_group2_name_entry=Entry(self.ctr_left)
-       self.neuron_group2_name_entry.grid(row=14,column=1, padx=20, sticky=W)
-       
-       self.neuron_group2_size=Label(self.ctr_left,text="Enter the size of your second neuron group",fg="green")       
-       self.neuron_group2_size.grid(row=15, padx=20, sticky=W)
-       self.neuron_group2_size_entry=Spinbox(self.ctr_left,from_=10,to=100)
-       self.neuron_group2_size_entry.grid(row=15,column=1, padx=20, sticky=W)
-      
-      
-       self.neuron_group2_threshold=Label(self.ctr_left,text="Enter the threoshold value unit=mV ",fg="green")
-       self.neuron_group2_threshold.grid(row=16, padx=20, sticky=W)
-       self.neuron_group2_threshold_entry=Spinbox(self.ctr_left,from_=10,to=100)
-       self.neuron_group2_threshold_entry.grid(row=16,column=1, padx=20, sticky=W)
-       
-       #bind the creation function to the button and drop down for modeling options [pending work]
-       self.neuron_group2_modeling=Label(self.ctr_left,text="Select the Modeling Option" ,fg="green")
-       self.neuron_group2_modeling.grid(row=17,column=0, padx=20, sticky=W)
-       self.neuron_group2_final=Button(self.ctr_left,text="Create the second neural network layer",fg="blue")
-       self.neuron_group2_final.grid(row=17,column=2, padx=20, sticky=W)
-
-
-       #Connection type BETWEEN GROUP 1 AND GROUP 2 [pending work]
-       self.connection_between_group12=Label(self.ctr_left,text="Choose the type of connection between Group1 and Group2" ,fg="red")
-       self.connection_between_group12.grid(row=18, padx=20, pady=10, sticky=W)
-       self.choices_12 = ['FullConnection', 'blah','blah','blah']
-       self.variable_12 = StringVar(self.ctr_right)
-       self.variable_12.set('Click Here to Choose')
-       self.w_12 = OptionMenu( self.ctr_left, self.variable_12, *self.choices_12)
-       self.w_12.grid(row=18,column=1,padx=20, pady=5, sticky=W)
-       self.y_12 = self.variable_12.get() 
-      
-
-
-       #Synapse type     [pending work]
-       self.connection_between_group12=Label(self.ctr_left,text="Choose the type of Synapses" ,fg="red")
-       self.connection_between_group12.grid(row=19, padx=20, pady=10, sticky=W)
-       self.s_choices_12 = ['StaticSTDP', 'StandardSTDP','SimplifiedSTDP','Ternary','Inhibitory']
-       self.s_variable_12 = StringVar(self.ctr_right)
-       self.s_variable_12.set('Click Here to Choose')
-       self.s_w_12 = OptionMenu( self.ctr_left, self.s_variable_12, *self.s_choices_12)
-       self.s_w_12.grid(row=19,column=1,padx=20, pady=5, sticky=W)
-       self.s_y_12 = self.s_variable_12.get() 
-      
-
-       #Connection type BETWEEN GROUP 1 AND GROUP 1 [pending work]
-       self.connection_between_group11=Label(self.ctr_left,text="Choose the type of connection between Group1 with itself" ,fg="red")
-       self.connection_between_group11.grid(row=20, padx=20, pady=10, sticky=W)
-       self.choices_11 = ['FullConnection', 'blah','blah','blah']
-       self.variable_11 = StringVar(self.ctr_right)
-       self.variable_11.set('Click Here to Choose')
-       self.w_11 = OptionMenu( self.ctr_left, self.variable_11, *self.choices_11)
-       self.w_11.grid(row=20,column=1,padx=20, pady=5, sticky=W)
-       self.y_11 = self.variable_11.get() 
-      
-
-
-       #Synapse type     [pending work]
-       self.connection_between_group11=Label(self.ctr_left,text="Choose the type of Synapses" ,fg="red")
-       self.connection_between_group11.grid(row=21, padx=20, pady=10, sticky=W)
-       self.s_choices_11 = ['StaticSTDP', 'StandardSTDP','SimplifiedSTDP','Ternary','Inhibitory']
-       self.s_variable_11 = StringVar(self.ctr_right)
-       self.s_variable_11.set('Click Here to Choose')
-       self.s_w_11 = OptionMenu( self.ctr_left, self.s_variable_11, *self.s_choices_11)
-       self.s_w_11.grid(row=21,column=1,padx=20, pady=5, sticky=W)
-       self.s_y_11 = self.s_variable_11.get() 
-      
-
-
-
-
-
-
-
-
-
-       '''
-       #add the things we can do with the n2s3 simulator
-       self.labelhelp=TEXT(self.ctr_right)
-       self.labelhelp.grid(row=1, sticky="nsew") 
-       self.labelhelp.insert(INSERT, "With the N2S3 simulator comes a small domain-specific language, aimed at providing a simplified interface for enthusiasts not yet familiar with the scala programming language. For now, it only supports basic experiment writing, that is : * Network definition ")
-
-
-       '''
-        
 
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
 
@@ -446,6 +237,19 @@ class NessyDSL(object):
       print("Successful Created Object") 
 
 
-root = Tk()
-run=NessyDSL(root)
-root.mainloop()
+
+
+
+
+
+
+def main():
+    pass
+
+#if we want to import this file and prevent it running there automatically just put the function call in the statements below
+if __name__ == "__main__":
+   # stuff only to run when not called via 'import' here
+     root = Tk()
+     run=NessyDSL(root)
+     root.mainloop()
+
