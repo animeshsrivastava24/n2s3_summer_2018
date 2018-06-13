@@ -513,13 +513,6 @@ class NessyDSL(object):
     '''
     The above functions definition are for defining the layer, size, moeling and synapse connections for working
     '''
-
-
-
-
-
-
-
 #the below function is required to just avoid the script to run when connected to the internet
 def main():
     pass
