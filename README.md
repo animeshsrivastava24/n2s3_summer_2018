@@ -1,9 +1,6 @@
 # n2s3_summer_2018
-gui for dsl
 Things to be Done:
-
-
-Log: Sun 10th June
+Log: 13th June
 - [X] Add the n2s3 simulator logo
 - [X] Show the Console output on the Tkinter Widget
 - [] Do the callback bugfix
