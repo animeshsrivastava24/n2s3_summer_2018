@@ -88,9 +88,11 @@ class NessyDSL(object):
         self.photo = PhotoImage(data=self.image_b64)
         self.photo = self.photo.zoom(56) #with 250, I ended up running out of memory
         self.photo = self.photo.subsample(30)
-        self.cv = Canvas(self.btm_frame,bg='white')
-        self.cv.grid()
+        self.cv = Canvas(self.btm_frame,bg='seashell')
+        self.cv.grid(sticky=N+E+W)
+        self.cv.columnconfigure(1, weight=1)
         self.cv.create_image(10, 10, image=self.photo, anchor='nw')
+        
        except:
         print("Need an active internet connection to download the n2s3 picture")
        
@@ -212,7 +214,7 @@ class NessyDSL(object):
        self.group_2_size_value.grid(row=12,column=1, padx=20, sticky=W)
  
 
-       self.group_2_modeling=Label(self.ctr_left,text="Choose the modeling for the neurons of group_2" ,fg="black")
+       self.group_2_modeling=Label(self.ctr_left,text="Choose the modeling for the neurons of group_2" ,fg="blue")
        self.group_2_modeling.grid(row=13, padx=20,sticky=W)
        self.grp2_opt1=Radiobutton(self.ctr_left,text="LIF",value = "LIF",variable = self.btn5).grid(row=13, column=1, sticky=W)
        self.grp2_opt2=Radiobutton(self.ctr_left,text="SRM",value = "SRM",variable =self.btn5).grid(row=13, column=2, sticky=W)
@@ -220,7 +222,7 @@ class NessyDSL(object):
        
 
        
-       self.group_2_MembranePotentialThreshold=Label(self.ctr_left,text="Choose the MembranePotentialThreshold for group_2 in mV" ,fg="black")
+       self.group_2_MembranePotentialThreshold=Label(self.ctr_left,text="Choose the MembranePotentialThreshold for group_2 in mV" ,fg="blue")
        self.group_2_MembranePotentialThreshold.grid(row=14, padx=20, sticky=W)
 
        self.group_2_MembranePotentialThreshold_value=Spinbox(self.ctr_left, from_=10, to=100)
@@ -293,6 +295,20 @@ class NessyDSL(object):
        self.button_groupi1=Button(self.ctr_left,text='Connect input with group_1',fg='green',state=NORMAL)
        self.button_groupi1.grid(row=22,column=3,padx=20, sticky=W)
        self.button_groupi1.bind("<Button-1>", self.Button_groupi1)       
+   
+
+
+       #Now that the network is all set up, we can git it a training set
+       #network trainOn MnistFileInputStream(/path/to/MNISTTrainingSet, /path/to/MNISTTrainingLabels)
+       #And once it is trained, we can test it efficiency
+       #network testOn MnistFileInputStream(/path/to/MNISTTestSet, /path/to/MNISTTestLabels)
+       self.trainOn=Button(self.ctr_left,text='Click to train the Network',fg='red',state=NORMAL)
+       self.trainOn.grid(row=23,padx=20, sticky=W)
+       self.trainOn.bind("<Button-1>", self.TrainOn)       
+   
+       self.testOn=Button(self.ctr_left,text='Click to test the efficiency',fg='red',state=NORMAL)
+       self.testOn.grid(row=24,padx=20, sticky=W)
+       self.testOn.bind("<Button-1>", self.TestOn)       
    
 
     #Define helper text for each of the buttons, this one is just for Declare_N2S3
@@ -407,12 +423,6 @@ class NessyDSL(object):
      except:
       print("The steps are not followed properly")
 
-
-
-
-
-
-
     '''
     The below functions definition are for defining the layer, size, moeling and synapse connections for working
     '''
@@ -513,6 +523,51 @@ class NessyDSL(object):
     '''
     The above functions definition are for defining the layer, size, moeling and synapse connections for working
     '''
+
+    '''
+    Train and Test function
+    '''
+
+    def TrainOn(self,event):
+     pass
+    '''
+      try:
+       self.trainOn.config(state="disabled")
+       if(self.btn1.get()="InputMnist")
+          with open(self.complete1,"a")  as self.filehandle: 
+            self.filebuffer1 = [r' ',r'network trainOn MnistFileInputStream(/path/to/MNISTTrainingSet, /path/to/MNISTTrainingLabels)']
+            self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
+          self.filehandle.close() 
+          print("Successful added Training Commmand")
+       else:
+          with open(self.complete1,"a")  as self.filehandle: 
+            self.filebuffer1 = [r' ',r'"input" connectsTo "group_1" using  FullConnection withSynapse '+self.btn13.get()]
+            self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
+          self.filehandle.close() 
+          print("Successful added Training Commmand")
+      except:
+       print("The steps are not followed properly")
+    '''
+    def TestOn(self,event):
+     pass
+    '''
+      try:
+       self.testOn.config(state="disabled")
+       if(self.btn1.get()=="InputMnist")
+          with open(self.complete1,"a")  as self.filehandle: 
+            self.filebuffer1 = [r' ',r'network trainOn MnistFileInputStream(/path/to/MNISTTrainingSet, /path/to/MNISTTrainingLabels)']
+            self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
+          self.filehandle.close() 
+          print("Successful added Test Commmand")
+       else:
+          with open(self.complete1,"a")  as self.filehandle: 
+            self.filebuffer1 = [r' ',r'network testOn MnistFileInputStream(/path/to/MNISTTestSet, /path/to/MNISTTestLabels)']
+            self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
+          self.filehandle.close() 
+          print("Successful added Test Commmand")
+      except:
+       print("The steps are not followed properly")
+     '''
 #the below function is required to just avoid the script to run when connected to the internet
 def main():
     pass
