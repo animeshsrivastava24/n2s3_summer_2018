@@ -1,0 +1,32 @@
+1. optional dots in the method invocation
+2. semicolon inference
+3. optional parenthesis
+4. type inferences
+5. concise lambda syntax
+6. case classes for higher level of abstraction
+7. implicits
+8. scala implicit conversion
+9. scala open classes
+10. scala VAR args
+
+Links:
+https://stackoverflow.com/questions/1181533/what-are-the-precise-rules-for-when-you-can-omit-parenthesis-dots-braces-f
+
+https://alvinalexander.com/scala/scala-methods-dots-spaces-single-one-parameter
+
+https://alvinalexander.com/scala/scala-cheat-sheet-reference-examples
+
+https://www.dotnetperls.com/option-scala [it has lot of options]
+https://www.dotnetperls.com/map-scala
+
+http://www.dhgarrette.com/nlpclass/scala/basics.html 
+
+
+https://stackoverflow.com/questions/9737352/what-is-the-apply-function-in-scala
+https://blog.matthewrathbone.com/2017/03/06/scala-object-apply-functions.html  [apply functions tips and tricks]
+
+
+https://www.tutorialspoint.com/scala/scala_maps.htm
+
+https://stackoverflow.com/questions/17408880/reduce-fold-or-scan-left-right
+
