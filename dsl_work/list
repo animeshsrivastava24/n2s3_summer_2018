@@ -29,6 +29,15 @@ https://blog.matthewrathbone.com/2017/03/06/scala-object-apply-functions.html  [
 https://www.tutorialspoint.com/scala/scala_maps.htm
 
 https://stackoverflow.com/questions/17408880/reduce-fold-or-scan-left-right
+
 https://alvinalexander.com/scala/scala-packaging-import-examples-aliases-renaming-hiding
 
 https://stackoverflow.com/questions/1006967/which-characters-can-i-omit-in-scala
+
+http://blog.siddhuw.info/writing-dsls-using-scala-part-1-underlying-concepts/
+
+https://stackoverflow.com/questions/11203268/what-is-a-sealed-trait
+
+Tutorials
+https://www.scala-exercises.org/scala_tutorial/structuring_information
+https://docs.scala-lang.org/tour/traits.html
