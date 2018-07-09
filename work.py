@@ -1,4 +1,4 @@
-#Created by Animesh Srivastava on 14th June
+#Created by Animesh Srivastava  
 #Information replace 'Bureau' with 'Desktop' in case you are an English user in the CreateDSL function in the Class
 from Tkinter import *
 import webbrowser
@@ -303,11 +303,11 @@ class NessyDSL(object):
        #And once it is trained, we can test it efficiency
        #network testOn MnistFileInputStream(/path/to/MNISTTestSet, /path/to/MNISTTestLabels)
        self.trainOn=Button(self.ctr_left,text='Click to train the Network',fg='red',state=NORMAL)
-       self.trainOn.grid(row=23,column=2,padx=20, sticky=W)
+       self.trainOn.grid(row=23,padx=20, sticky=W)
        self.trainOn.bind("<Button-1>", self.TrainOn)       
    
        self.testOn=Button(self.ctr_left,text='Click to test the efficiency',fg='red',state=NORMAL)
-       self.testOn.grid(row=23,column=3,padx=20, sticky=W)
+       self.testOn.grid(row=24,padx=20, sticky=W)
        self.testOn.bind("<Button-1>", self.TestOn)       
    
 
@@ -529,10 +529,11 @@ class NessyDSL(object):
     '''
 
     def TrainOn(self,event):
-      print(self.btn1.get())
+     pass
+    '''
       try:
        self.trainOn.config(state="disabled")
-       if(self.btn1.get()=="InputMnist"):
+       if(self.btn1.get()="InputMnist")
           with open(self.complete1,"a")  as self.filehandle: 
             self.filebuffer1 = [r' ',r'network trainOn MnistFileInputStream(/path/to/MNISTTrainingSet, /path/to/MNISTTrainingLabels)']
             self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
@@ -546,12 +547,13 @@ class NessyDSL(object):
           print("Successful added Training Commmand")
       except:
        print("The steps are not followed properly")
-    
-
+    '''
     def TestOn(self,event):
+     pass
+    '''
       try:
        self.testOn.config(state="disabled")
-       if(self.btn1.get()=="InputMnist"):
+       if(self.btn1.get()=="InputMnist")
           with open(self.complete1,"a")  as self.filehandle: 
             self.filebuffer1 = [r' ',r'network trainOn MnistFileInputStream(/path/to/MNISTTrainingSet, /path/to/MNISTTrainingLabels)']
             self.filehandle.writelines("%s\n" % line for line in self.filebuffer1)  
@@ -565,7 +567,7 @@ class NessyDSL(object):
           print("Successful added Test Commmand")
       except:
        print("The steps are not followed properly")
-  
+     '''
 #the below function is required to just avoid the script to run when connected to the internet
 def main():
     pass
